@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var data_hander = require('./data_handler.js');
 var http = require('http');
-
+var request = require("request");
 var index = require('./routes/index');
 
 var app = express();
@@ -56,6 +56,7 @@ const io = require('socket.io')(socket_http);
 
 
 function onConnection(socket){
+    // when the page is loaded lets start streaming data.
     data_hander.subscribe(socket);
     console.log('connected');
     queryHarperDB(socket);
@@ -80,7 +81,6 @@ function queryHarperDB(socket){
             },
         json: true };
 
-    var request = require("request");
     request(options, function (error, response, body) {
         if (error) {
             console.error(error);
@@ -95,6 +95,7 @@ function queryHarperDB(socket){
 
 io.on('connection', onConnection);
 
+// we connect to this via ./public/index.js
 socket_http.listen(8080, () => console.log('socket server on'));
 
 

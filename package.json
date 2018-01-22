@@ -13,6 +13,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "pubnub": "^4.20.0",
+    "request": "^2.83.0",
     "serve-favicon": "~2.4.2",
     "socket.io": "^2.0.4",
     "socket.io-client": "^2.0.4"
