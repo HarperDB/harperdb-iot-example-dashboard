@@ -64,34 +64,42 @@ function onConnection(socket){
     queryHarperDB(socket);
 }
 
+
+
+
+
 function queryHarperDB(socket){
-    let options = {
-        method: terms.POST_METHOD,
-        url: terms.HARPER_URL,s
-        headers:
-            {
-                authorization: terms.AUTH_TOKEN,
-                'content-type': terms.CONTENT_HEADER
-            },
-        body:
-            {
-                operation: SQL_OPERATION,
-                sql: 'select count(timetoken) as records, max(radiation_level), median(humidity), avg(ambient_temperature)  from iot_data.message'
-            },
-        json: true };
+    if(socket.client.conn.readyState === 'open'){
+        let options = {
+            method: terms.POST_METHOD,
+            url: terms.HARPER_URL,
+            headers:
+                {
+                    authorization: terms.AUTH_TOKEN,
+                    'content-type': terms.CONTENT_HEADER
+                },
+            body:
+                {
+                    operation: SQL_OPERATION,
+                    sql: 'select count(timetoken) as records, max(radiation_level), median(humidity), avg(ambient_temperature)  from iot_data.message'
+                },
+            json: true };
 
-    request(options, function (error, response, body) {
-        if (error) {
-            console.error(error);
-        }
-        socket.emit(terms.SOCKET_QUERY_MESSAGE_NAME, body);
-        setTimeout(function(){ queryHarperDB(socket); }, 5000);
+        request(options, function (error, response, body) {
+            if (error) {
+                console.error(error);
+            }
+            socket.emit(terms.SOCKET_QUERY_MESSAGE_NAME, body);
+            setTimeout(function(){ queryHarperDB(socket); }, 5000);
 
-    });
+        });
+    }
+
 }
 
 
 io.on('connection', onConnection);
+
 // we connect to this via ./public/index.js
 socket_http.listen(8080, () => console.log('socket server on'));
 module.exports = app;
