@@ -1,28 +1,26 @@
+const terms = require('../../common_terms.js');
+
+const HTTP_SERVER_URL = 'http://localhost:8080';
+
 //connect to socket.io server in data_handler.js
-var socket = io.connect('http://localhost:8080');
-socket.on('update-msg', function (msg) {
+let socket = io.connect(HTTP_SERVER_URL);
+socket.on(terms.SOCKET_UPDATE_MESSAGE_NAME, function (msg) {
     //display raw data from pubnub using socket.io
     $('#data').html(JSON.stringify(msg))
 });
 
-socket.on('query-msg', function (msg) {
+socket.on(terms.SOCKET_QUERY_MESSAGE_NAME, function (msg) {
     // display raw HarperDB query
     $('#summary').html(JSON.stringify(msg))
-    //[{"records":76052,"max(radiation_level)":207,"median(humidity)":79.98060000000001,"avg(ambient_temperature)":20.98234865618286}]
     renderThermometer(msg[0]["avg(ambient_temperature)"]);
     renderRecords(msg[0].records);
     renderRadiation(msg[0]["max(radiation_level)"]);
     renderHumidity(msg[0]["median(humidity)"])
-
-
-
-
 });
-
 
 function renderRecords(records){
     FusionCharts.ready(function(){
-        var fusioncharts = new FusionCharts({
+        let fusioncharts = new FusionCharts({
                 type: 'vbullet',
                 renderAt: 'records-chart',
                 id: 'rev-bullet-2',
@@ -66,10 +64,9 @@ function renderRecords(records){
     });
 }
 
-
 function renderThermometer(temp){
     FusionCharts.ready(function(){
-        var fusioncharts = new FusionCharts({
+        let fusioncharts = new FusionCharts({
                 type: 'thermometer',
                 renderAt: 'thermo-chart',
                 id: 'myThm-1',
@@ -106,32 +103,27 @@ function renderRadiation(rads){
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-
-
-        var data = google.visualization.arrayToDataTable([
+        let data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['Radation', rads]
-
-
         ]);
-        var options = {
+
+        let options = {
             width: 240, height: 300,
             redFrom: 1000, redTo: 3000,
             yellowFrom:300, yellowTo: 1000,
             minorTicks: 5,
             max: 3000
         };
-        var chart = new google.visualization.Gauge(document.getElementById('radiation-chart'));
+
+        let chart = new google.visualization.Gauge(document.getElementById('radiation-chart'));
         chart.draw(data, options);
-
-
     }
-
 }
 
 function renderHumidity(humidity){
     FusionCharts.ready(function(){
-        var fusioncharts = new FusionCharts({
+        let fusioncharts = new FusionCharts({
                 type: 'vled',
                 renderAt: 'humidity-chart',
                 width: '240',
@@ -168,12 +160,10 @@ function renderHumidity(humidity){
                     },
                     "value": humidity
                 }
-
             }
         );
         fusioncharts.render();
     });
-
 }
 
 
