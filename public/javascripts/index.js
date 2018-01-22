@@ -1,15 +1,16 @@
-const terms = require('../../common_terms.js');
-
 const HTTP_SERVER_URL = 'http://localhost:8080';
+const SOCKET_UPDATE_MESSAGE_NAME = 'update-msg';
+const SOCKET_QUERY_MESSAGE_NAME = 'query-msg';
+
 
 //connect to socket.io server in data_handler.js
 let socket = io.connect(HTTP_SERVER_URL);
-socket.on(terms.SOCKET_UPDATE_MESSAGE_NAME, function (msg) {
+socket.on(SOCKET_UPDATE_MESSAGE_NAME, function (msg) {
     //display raw data from pubnub using socket.io
     $('#data').html(JSON.stringify(msg))
 });
 
-socket.on(terms.SOCKET_QUERY_MESSAGE_NAME, function (msg) {
+socket.on(SOCKET_QUERY_MESSAGE_NAME, function (msg) {
     // display raw HarperDB query
     $('#summary').html(JSON.stringify(msg))
     renderThermometer(msg[0]["avg(ambient_temperature)"]);
