@@ -67,7 +67,7 @@ function onConnection(socket){
 function queryHarperDB(socket){
     let options = {
         method: terms.POST_METHOD,
-        url: terms.HARPER_URL,
+        url: terms.HARPER_URL,s
         headers:
             {
                 authorization: terms.AUTH_TOKEN,
@@ -85,7 +85,8 @@ function queryHarperDB(socket){
             console.error(error);
         }
         socket.emit(terms.SOCKET_QUERY_MESSAGE_NAME, body);
-        setInterval(function(){queryHarperDB(socket)}, 5000);
+        setTimeout(function(){ queryHarperDB(socket); }, 5000);
+
     });
 }
 
