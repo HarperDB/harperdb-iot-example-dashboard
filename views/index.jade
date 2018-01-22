@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  // Latest compiled and minified CSS
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+  link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
+  script(
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous" )
+  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
+  script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
+  script(type="text/javascript" src="http://static.fusioncharts.com/code/latest/fusioncharts.js")
+  script(type="text/javascript" src="http://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.fint.js?cacheBust=56")
+
+  script(src="/javascripts/index.js")
+  .container
+    .row
+      h1="Dashboard"
+
+    .row
+      .col-md-3
+        #records-chart
+      .col-md-3
+        #thermo-chart
+      .col-md-3
+        #radiation-chart(style="width: 400px; height: 120px;")
+      .col-md-3
+        #humidity-chart
+    .row
+      h1="Raw Data"
+      .panel.panel-default
+        .panel-heading
+          a(href="https://www.pubnub.com/developers/realtime-data-streams/sensor-network/" target='_new') Pubnub Streaming Data
+        .panel-body
+          pre
+            code(id="data")
+      .panel.panel-default
+        .panel-heading
+          |HarperDB query
+        .panel-body
+          pre
+            code(id="query")
+              | "select count(timetoken) as records, max(radiation_level), median(humidity), avg(ambient_temperature)  from iot_data.message"
+
+      .panel.panel-default
+        .panel-heading
+          | HarperDB query results
+        .panel-body
+          pre
+            code(id="summary")
+
+
+
+
